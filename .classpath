@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="/JACUSA"/>
+	<classpathentry kind="lib" path="/JACUSA/lib/commons/commons-cli-1.2.jar"/>
+	<classpathentry kind="lib" path="/JACUSA/lib/Picard/sam-1.92.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
