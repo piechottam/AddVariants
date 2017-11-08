@@ -1,142 +1,53 @@
 package addvariants.cli.parameters;
 
-import jacusa.data.BaseCallConfig;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import lib.data.BaseCallConfig;
+import lib.io.variant.AbstractVariantFormat;
+import lib.io.variant.BEDlikeVariantFormat;
+
 import addvariants.AddVariants;
 import addvariants.data.BaseQualRecordData;
-import addvariants.io.variant.AbstractVariantFormat;
-import addvariants.io.variant.BEDlikeVariantFormat;
 import addvariants.method.AbstractMethodFactory;
 
-public abstract class AbstractParameters<T extends BaseQualRecordData> {
-
-	private int activeWindowSize;
-	private int reservedWindowSize;
-	
-	private int threads;
-	private BaseCallConfig baseConfig;
+public abstract class AbstractParameters<T extends BaseQualRecordData> 
+extends lib.cli.parameters.AbstractParameters<T> {
 	
 	// bed file to scan for variants
 	private String inputBedFilename;
-	
+
 	// chosen method
 	private AbstractMethodFactory<T> methodFactory;
 
 	// variant output
 	private String variantFilename;
-	private AbstractVariantFormat<T> variantFormat;
+	private AbstractVariantFormat variantFormat;
 	
-	private List<Condition<T>> conditions;
-	
-	// debug flag
-	private boolean debug;
+	private List<ConditionParameter<T>> conditions;
 
 	public AbstractParameters() {
-		activeWindowSize 	= 10000;
-		reservedWindowSize	= 10 * activeWindowSize;
-		
-		threads = 1;
-		baseConfig = BaseCallConfig.getInstance();
+		super();
 
-		conditions = new ArrayList<Condition<T>>(3);
-
-		inputBedFilename	= new String();
-		debug				= false;
+		conditions = new ArrayList<ConditionParameter<T>>(3);
 		
 		variantFilename = new String();
 		variantFormat = new BEDlikeVariantFormat<T>();
 	}
 	
-	public AbstractParameters(final int conditions) {
+	public AbstractParameters(final int conditionSize) {
 		this();
-		for (int conditionIndex = 0; conditionIndex < conditions; conditionIndex++) {
-			this.conditions.add(new Condition<T>());
+		for (int conditionIndex = 0; conditionIndex < conditionSize; conditionIndex++) {
+			this.conditions.add(new ConditionParameter<T>());
 		}
 	}
 
-	public int getMaxThreads() {
-		return threads;
-	}
-	
-	public BaseCallConfig getBaseConfig() {
-		return baseConfig;
-	}
-	
-	public List<Condition<T>> getConditions() {
-		return conditions;
-	}
-	
-	/**
-	 * @return the bedPathname
-	 */
-	public String getInputBedFilename() {
-		return inputBedFilename;
-	}
-
-	/**
-	 * @param inputBedFilename the bedPathname to set
-	 */
-	public void setInputBedFilename(final String inputBedFilename) {
-		this.inputBedFilename = inputBedFilename;
-	}
-
-	/**
-	 * @return the methodFactory
-	 */
-	public AbstractMethodFactory<T> getMethodFactory() {
-		return methodFactory;
-	}
-
-	/**
-	 * @param methodFactory the methodFactory to set
-	 */
-	public void setMethodFactory(final AbstractMethodFactory<T> methodFactory) {
-		this.methodFactory = methodFactory;
-	}
-
-	/**
-	 * @return the debug
-	 */
-	public boolean isDebug() {
-		return debug;
-	}
-
-	public void setMaxThreads(final int threads) {
-		this.threads = threads;
-	}
-	
-	public void setActiveWindowSize(final int activeWindowSize) {
-		this.activeWindowSize = activeWindowSize;
-	}
-	
-	/**
-	 * @param debug the debug to set
-	 */
-	public void setDebug(final boolean debug) {
-		AddVariants.getLogger().addDebug("DEBUG Modus Active!");
-		this.debug = debug;
-	}
-	
-	public int getReservedWindowSize() {
-		return reservedWindowSize;
-	}
-
-	public void setReservedWindowSize(final int reservedWindowSize) {
-		this.reservedWindowSize = reservedWindowSize;
-	}
-	
-	public int getActiveWindowSize() {
-		return activeWindowSize;
-	}
-
-	public AbstractVariantFormat<T> getVariantFormat() {
+	public AbstractVariantFormat getVariantFormat() {
 		return variantFormat;
 	}
 
-	public void setVariantFormat(final AbstractVariantFormat<T> variantFormat) {
+	public void setVariantFormat(final AbstractVariantFormat variantFormat) {
 		this.variantFormat = variantFormat;
 	}
 	

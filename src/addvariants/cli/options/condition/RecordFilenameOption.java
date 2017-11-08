@@ -1,14 +1,18 @@
 package addvariants.cli.options.condition;
 
+
 import java.io.File;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.List;
 
+import lib.cli.options.condition.AbstractConditionACOption;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
 
-import addvariants.cli.parameters.Condition;
+import com.sun.org.apache.xalan.internal.xsltc.cmdline.getopt.GetOpt;
+
+import addvariants.cli.parameters.ConditionParameter;
 import addvariants.data.BaseQualRecordData;
 
 public class RecordFilenameOption<T extends BaseQualRecordData> 
@@ -21,15 +25,14 @@ extends AbstractConditionACOption<T> {
 	
 	public final static String SUFFIX = "modified";
 	
-	public RecordFilenameOption(final int conditionIndex, final Condition<T> condition) {
-		super(OPT, LONG_OPT, conditionIndex, condition);
+	public RecordFilenameOption(final int conditionIndex, final ConditionParameter<T> conditionParameter) {
+		super(OPT, LONG_OPT, conditionIndex, conditionParameter);
 	}
 
-	public RecordFilenameOption(final List<Condition<T>> conditions) {
-		super(OPT, LONG_OPT, conditions);
+	public RecordFilenameOption(final List<ConditionParameter<T>> conditionParameters) {
+		super(OPT, LONG_OPT, conditionParameters);
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public Option getOption() {
 		final StringBuilder sb = new StringBuilder();
@@ -42,11 +45,12 @@ extends AbstractConditionACOption<T> {
 		//	sb.append("\nDefault: (Current directory)");
 		//}
 
-		return OptionBuilder.withLongOpt(getLongOpt())
-			.withArgName(getLongOpt().toUpperCase())
-			.hasArg(true)
-	        .withDescription(sb.toString())
-	        .create(getOpt());
+		return Option.builder(getOpt())
+				.longOpt(getLongOpt())
+				.argName(getLongOpt().toUpperCase())
+				.hasArg(true)
+				.desc(sb.toString())
+				.build();
 	}
 
 	@Override
@@ -59,7 +63,7 @@ extends AbstractConditionACOption<T> {
 		 		throw new FileAlreadyExistsException(recordFilename);
 		 	}
 		 	// set record output filename
-			for (final Condition<T> condition : getConditions()) {
+			for (final ConditionParameter<T> condition : getConditionParameters()) {
 	    		condition.setRecordFilename(recordFilename);
 	    	}
 			

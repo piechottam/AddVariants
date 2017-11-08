@@ -1,7 +1,5 @@
 package addvariants.worker;
 
-import jacusa.data.BaseCallConfig;
-import jacusa.util.Coordinate;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,12 +8,17 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import addvariants.cli.parameters.Condition;
+import lib.data.BaseCallConfig;
+import lib.data.builder.BaseCallCache;
+import lib.data.builder.SAMRecordWrapper;
+import lib.tmp.SAMRecordModifier;
+import lib.util.Coordinate;
+import lib.variant.Variant;
+
+import addvariants.cli.parameters.ConditionParameter;
 import addvariants.cli.parameters.RandomMutationsParameters;
 import addvariants.data.BaseQualRecordData;
-import addvariants.data.builder.SAMRecordWrapper;
 import addvariants.utils.ParallelData;
-import addvariants.utils.Variant;
 
 public class RandomMutation<T extends BaseQualRecordData> 
 implements SAMRecordModifier {
@@ -40,9 +43,9 @@ implements SAMRecordModifier {
 		this.parameters = parameters;
 		parallelData = new ParallelData<T>(parameters.getMethodFactory());
 
-		caches = new BaseCallCache[parameters.getConditions().size()];
-		readRecords = new ArrayList<List<SAMRecordWrapper>>(parameters.getConditions().size());
-		for (int conditionIndex = 0; conditionIndex < parameters.getConditions().size(); conditionIndex++) {
+		caches = new BaseCallCache[parameters.getConditionsSize().size()];
+		readRecords = new ArrayList<List<SAMRecordWrapper>>(parameters.getConditionsSize().size());
+		for (int conditionIndex = 0; conditionIndex < parameters.getConditionsSize().size(); conditionIndex++) {
 			final List<SAMRecordWrapper> list = new ArrayList<SAMRecordWrapper>(parameters.getActiveWindowSize());
 			readRecords.add(list);
 			final BaseCallCache cache = new BaseCallCache(parameters.getBaseConfig(), parameters.getActiveWindowSize());
@@ -68,7 +71,7 @@ implements SAMRecordModifier {
 	public List<List<SAMRecordWrapper>> build(final Coordinate activeWindowCoordinate, 
 			final List<Iterator<SAMRecordWrapper>> iterators) {
 		
-		for (int conditionIndex = 0; conditionIndex < parameters.getConditions().size(); conditionIndex++) {
+		for (int conditionIndex = 0; conditionIndex < parameters.getConditionsSize().size(); conditionIndex++) {
 			// reset
 			final BaseCallCache cache = caches[conditionIndex]; 
 			cache.setWindowCoordinates(activeWindowCoordinate);
@@ -126,7 +129,7 @@ implements SAMRecordModifier {
 	}
 
 	private boolean isValid(final int windowPosition) {
-		for (int conditionIndex = 0; conditionIndex < parameters.getConditions().size(); conditionIndex++) {
+		for (int conditionIndex = 0; conditionIndex < parameters.getConditionsSize().size(); conditionIndex++) {
 			if (! isCovered(conditionIndex, windowPosition)) {
 				return false;
 			}
@@ -150,7 +153,7 @@ implements SAMRecordModifier {
 	}
 
 	private boolean isCovered(final int conditionIndex, final int windowPosition) {
-		final Condition<T> condition = parameters.getConditions().get(conditionIndex);
+		final ConditionParameter<T> condition = parameters.getConditionsSize().get(conditionIndex);
 		final int minCoverage = condition.getMinCoverage();
 		final int coverage = caches[conditionIndex].getCoverage(windowPosition);
 		return coverage >= minCoverage;
@@ -196,14 +199,14 @@ implements SAMRecordModifier {
 	}
 
 	private ParallelData<T> updateParallelData(final int windowPosition) {
-		final int conditions = parameters.getConditions().size();
+		final int conditions = parameters.getConditionsSize().size();
 		parallelData.reset();
 		
 		final int referencePosition = activeWindowStart + windowPosition;
 
 		// update of coordinates not needed
 		for (int conditionIndex = 0; conditionIndex < conditions; conditionIndex++) {
-			final Condition<T> condition = parameters.getConditions().get(conditionIndex);
+			final ConditionParameter<T> condition = parameters.getConditionsSize().get(conditionIndex);
 			final List<SAMRecordWrapper> recordWrappers = caches[conditionIndex].getRecordWrapper(windowPosition);
 
 			T data = parameters.getMethodFactory().createData();

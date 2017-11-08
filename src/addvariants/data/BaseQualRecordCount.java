@@ -3,9 +3,9 @@ package addvariants.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import addvariants.data.builder.SAMRecordWrapper;
 
-import jacusa.data.BaseQualCount;
+import lib.data.BaseQualCount;
+import lib.data.builder.SAMRecordWrapper;
 
 public class BaseQualRecordCount extends BaseQualCount {
 

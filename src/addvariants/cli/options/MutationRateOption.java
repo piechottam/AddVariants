@@ -1,10 +1,9 @@
 package addvariants.cli.options;
 
-import jacusa.cli.options.AbstractACOption;
+import lib.cli.options.AbstractACOption;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
 
 import addvariants.cli.parameters.RandomMutationsParameters;
 
@@ -17,14 +16,14 @@ public class MutationRateOption extends AbstractACOption {
 		this.parameters = parameters;
 	}
 	
-	@SuppressWarnings("static-access")
 	@Override
 	public Option getOption() {
-		return OptionBuilder.withLongOpt(getLongOpt())
-				.withArgName(getLongOpt().toUpperCase())
+		return Option.builder(getOpt())
+				.longOpt(getLongOpt())
+				.argName(getLongOpt().toUpperCase())
 				.hasArg(true)
-		        .withDescription("Mutation rate " + getLongOpt().toUpperCase() + " \n default: " + parameters.getMutationRate())
-		        .create(getOpt());
+		        .desc("Mutation rate " + getLongOpt().toUpperCase() + " \n default: " + parameters.getMutationRate())
+		        .build();
 	}
 
 	@Override

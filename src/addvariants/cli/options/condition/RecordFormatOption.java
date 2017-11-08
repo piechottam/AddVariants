@@ -1,20 +1,19 @@
 package addvariants.cli.options.condition;
 
-import jacusa.cli.options.AbstractACOption;
-
 import java.util.Map;
+
+import lib.cli.options.AbstractACOption;
+import lib.io.record.AbstractRecordFormat;
+import lib.io.record.BAMRecordFormat;
+import lib.io.record.FASTQRecordFormat;
+import lib.io.record.SAMRecordFormat;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
 
 import addvariants.cli.parameters.AbstractParameters;
-import addvariants.cli.parameters.Condition;
+import addvariants.cli.parameters.ConditionParameter;
 import addvariants.data.BaseQualRecordData;
-import addvariants.io.record.AbstractRecordFormat;
-import addvariants.io.record.BAMRecordFormat;
-import addvariants.io.record.FASTQRecordFormat;
-import addvariants.io.record.SAMRecordFormat;
 
 public class RecordFormatOption<T extends BaseQualRecordData> 
 extends AbstractACOption {
@@ -28,12 +27,11 @@ extends AbstractACOption {
 		this.formats = formats;
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public Option getOption() {
 		StringBuffer sb = new StringBuffer();
 
-		final Condition<T> condition = parameters.getConditions().get(0); 
+		final ConditionParameter<T> condition = parameters.getConditionsSize().get(0); 
 		final AbstractRecordFormat<T> recordFormat = condition.getRecordFormat();
 
 		for (final char c : formats.keySet()) {
@@ -49,11 +47,12 @@ extends AbstractACOption {
 			sb.append("\n");
 		}
 		
-		return OptionBuilder.withLongOpt(getLongOpt())
-			.withArgName(getLongOpt().toUpperCase())
-			.hasArg(true)
-			.withDescription("Choose record tput format:\n" + sb.toString())
-			.create(getOpt()); 
+		return Option.builder(getOpt())
+				.longOpt(getLongOpt())
+				.argName(getLongOpt().toUpperCase())
+				.hasArg(true)
+				.desc("Choose record tput format:\n" + sb.toString())
+				.build(); 
 	}
 
 	@Override
@@ -67,7 +66,7 @@ extends AbstractACOption {
 			if (! formats.containsKey(c)) {
 				throw new IllegalArgumentException("Unknown record format: " + c);
 			}
-			for (final Condition<T> condition : parameters.getConditions()) {
+			for (final ConditionParameter<T> condition : parameters.getConditionsSize()) {
 				AbstractRecordFormat<T> recordFormat = null;
 				switch (c) {
 				case SAMRecordFormat.CHAR:

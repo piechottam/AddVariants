@@ -1,13 +1,12 @@
 package addvariants.cli.options.condition;
 
-import jacusa.cli.options.AbstractACOption;
-
 import java.io.File;
 import java.nio.file.FileAlreadyExistsException;
 
+import lib.cli.options.AbstractACOption;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
 
 import addvariants.cli.parameters.AbstractParameters;
 
@@ -21,16 +20,16 @@ extends AbstractACOption {
 		this.parameters = parameters;
 	}
 	
-	@SuppressWarnings("static-access")
 	@Override
 	public Option getOption() {
 		String s = "Filename to store implanted variants\ndefault: " + parameters.getVariantFilename();
 
-		return OptionBuilder.withLongOpt(getLongOpt())
-			.withArgName(getLongOpt().toUpperCase())
-			.hasArg(true)
-	        .withDescription(s)
-	        .create(getOpt());
+		return Option.builder(getOpt())
+				.longOpt(getLongOpt())
+				.argName(getLongOpt().toUpperCase())
+				.hasArg(true)
+				.desc(s)
+				.build();
 	}
 
 	@Override

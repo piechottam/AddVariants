@@ -1,18 +1,17 @@
-package addvariants.cli.options.condition;
-
-import jacusa.cli.options.AbstractACOption;
+ package addvariants.cli.options.condition;
 
 import java.util.Map;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
+
+import lib.cli.options.AbstractACOption;
+import lib.io.variant.AbstractVariantFormat;
+import lib.io.variant.BEDlikeVariantFormat;
+import lib.io.variant.VCFVariantFormat;
 
 import addvariants.cli.parameters.AbstractParameters;
 import addvariants.data.BaseQualRecordData;
-import addvariants.io.variant.AbstractVariantFormat;
-import addvariants.io.variant.BEDlikeVariantFormat;
-import addvariants.io.variant.VCFVariantFormat;
 
 public class VariantFormatOption<T extends BaseQualRecordData> 
 extends AbstractACOption {
@@ -26,7 +25,6 @@ extends AbstractACOption {
 		this.formats = formats;
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public Option getOption() {
 		StringBuffer sb = new StringBuffer();
@@ -45,12 +43,14 @@ extends AbstractACOption {
 			sb.append(format.getDesc());
 			sb.append("\n");
 		}
-		
-		return OptionBuilder.withLongOpt(getLongOpt())
-			.withArgName(getLongOpt().toUpperCase())
-			.hasArg(true)
-			.withDescription("Choose variant output format:\n" + sb.toString())
-			.create(getOpt()); 
+
+		return Option.builder(getOpt())
+				.longOpt(getLongOpt())
+				.argName(getLongOpt().toUpperCase())
+				.hasArg(true)
+				.desc("Choose variant output format:\n" + sb.toString())
+				.build();
+
 	}
 	
 	@Override

@@ -3,36 +3,26 @@ package addvariants.method;
 import java.util.HashMap;
 import java.util.Map;
 
+import lib.io.record.AbstractRecordFormat;
+import lib.io.record.BAMRecordFormat;
+import lib.io.record.FASTQRecordFormat;
+import lib.io.record.SAMRecordFormat;
+import lib.io.variant.AbstractVariantFormat;
+import lib.io.variant.BEDlikeVariantFormat;
+import lib.io.variant.VCFVariantFormat;
+import lib.tmp.SAMRecordModifier;
+
 import org.apache.commons.cli.ParseException;
 
-import addvariants.cli.CLI;
-import addvariants.cli.options.HelpOption;
-import addvariants.cli.options.MaxThreadOption;
 import addvariants.cli.options.MutationRateOption;
-import addvariants.cli.options.ThreadWindowSizeOption;
-import addvariants.cli.options.WindowSizeOption;
-import addvariants.cli.options.condition.MinBASQConditionOption;
-import addvariants.cli.options.condition.MinCoverageConditionOption;
-import addvariants.cli.options.condition.MinMAPQConditionOption;
 import addvariants.cli.options.condition.RecordFilenameOption;
 import addvariants.cli.options.condition.RecordFormatOption;
 import addvariants.cli.options.condition.VariantFilenameOption;
 import addvariants.cli.options.condition.VariantFormatOption;
-import addvariants.cli.options.condition.filter.FilterFlagConditionOption;
-import addvariants.cli.options.condition.filter.FilterNHsamTagOption;
-import addvariants.cli.options.condition.filter.FilterNMsamTagOption;
-import addvariants.cli.parameters.Condition;
+import addvariants.cli.parameters.ConditionParameter;
 import addvariants.cli.parameters.RandomMutationsParameters;
 import addvariants.data.BaseQualRecordData;
-import addvariants.io.record.AbstractRecordFormat;
-import addvariants.io.record.BAMRecordFormat;
-import addvariants.io.record.FASTQRecordFormat;
-import addvariants.io.record.SAMRecordFormat;
-import addvariants.io.variant.AbstractVariantFormat;
-import addvariants.io.variant.BEDlikeVariantFormat;
-import addvariants.io.variant.VCFVariantFormat;
 import addvariants.worker.RandomMutation;
-import addvariants.worker.SAMRecordModifier;
 
 public class RandomMutationsMethod1 extends AbstractMethodFactory<BaseQualRecordData> {
 
@@ -64,13 +54,13 @@ public class RandomMutationsMethod1 extends AbstractMethodFactory<BaseQualRecord
 		// result format
 		if (getRecordFormat().size() == 1 ) {
 			final Character[] a = getRecordFormat().keySet().toArray(new Character[1]);
-			for (final Condition<BaseQualRecordData> condition : getParameters().getConditions()) {
+			for (final ConditionParameter<BaseQualRecordData> condition : getParameters().getConditionsSize()) {
 				condition.setRecordFormat(getRecordFormat().get(a[0]));
 			}
 		} else {
 			addACOption(new RecordFormatOption<BaseQualRecordData>(getParameters(), getRecordFormat()));
 		}
-		addACOption(new RecordFilenameOption<BaseQualRecordData>(getParameters().getConditions()));
+		addACOption(new RecordFilenameOption<BaseQualRecordData>(getParameters().getConditionsSize()));
 		
 		// variant format
 		if (getVariantFormat().size() == 1 ) {
@@ -81,13 +71,13 @@ public class RandomMutationsMethod1 extends AbstractMethodFactory<BaseQualRecord
 		}
 		addACOption(new VariantFilenameOption(getParameters()));
 
-		addACOption(new MinMAPQConditionOption<BaseQualRecordData>(getParameters().getConditions()));
-		addACOption(new MinBASQConditionOption<BaseQualRecordData>(getParameters().getConditions()));
-		addACOption(new MinCoverageConditionOption<BaseQualRecordData>(getParameters().getConditions()));
-		addACOption(new FilterFlagConditionOption<BaseQualRecordData>(getParameters().getConditions()));
+		addACOption(new MinMAPQConditionOption<BaseQualRecordData>(getParameters().getConditionsSize()));
+		addACOption(new MinBASQConditionOption<BaseQualRecordData>(getParameters().getConditionsSize()));
+		addACOption(new MinCoverageConditionOption<BaseQualRecordData>(getParameters().getConditionsSize()));
+		addACOption(new FilterFlagConditionOption<BaseQualRecordData>(getParameters().getConditionsSize()));
 
-		addACOption(new FilterNHsamTagOption<BaseQualRecordData>(getParameters().getConditions()));
-		addACOption(new FilterNMsamTagOption<BaseQualRecordData>(getParameters().getConditions()));
+		addACOption(new FilterNHsamTagOption<BaseQualRecordData>(getParameters().getConditionsSize()));
+		addACOption(new FilterNMsamTagOption<BaseQualRecordData>(getParameters().getConditionsSize()));
 		
 		/*
 		for (int conditionIndex = 0; conditionIndex < getParameters().getConditions().size(); ++conditionIndex) {

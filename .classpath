@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="/JACUSA"/>
-	<classpathentry kind="lib" path="/JACUSA/lib/commons/commons-cli-1.2.jar"/>
-	<classpathentry kind="lib" path="/JACUSA/lib/Picard/sam-1.92.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/JACUSA2"/>
+	<classpathentry kind="lib" path="/JACUSA2/lib/commons/commons-cli-1.4/commons-cli-1.4.jar" sourcepath="/JACUSA2/lib/commons/commons-cli-1.4/commons-cli-1.4-sources.jar"/>
+	<classpathentry kind="lib" path="/JACUSA2/lib/htsjdk/htsjdk-2.12.0-SNAPSHOT.jar" sourcepath="/JACUSA2/lib/htsjdk/htsjdk-2.12.0-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

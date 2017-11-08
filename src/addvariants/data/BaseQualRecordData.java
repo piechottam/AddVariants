@@ -3,13 +3,13 @@ package addvariants.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import addvariants.data.builder.SAMRecordWrapper;
-import addvariants.data.builder.hasRecords;
 
-import jacusa.data.AbstractData;
-import jacusa.data.BaseQualData;
-import jacusa.data.hasBaseQualCount;
 import jacusa.pileup.builder.hasLibraryType;
+import jacusa.pileup.builder.hasRecords;
+import lib.data.AbstractData;
+import lib.data.BaseQualData;
+import lib.data.hasBaseQualCount;
+import lib.data.builder.SAMRecordWrapper;
 
 public class BaseQualRecordData
 extends BaseQualData
