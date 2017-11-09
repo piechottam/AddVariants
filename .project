@@ -3,6 +3,7 @@
 	<name>AddVariants2</name>
 	<comment></comment>
 	<projects>
+		<project>JACUSA2</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

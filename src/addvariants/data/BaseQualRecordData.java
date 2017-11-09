@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import jacusa.pileup.builder.hasLibraryType;
-import jacusa.pileup.builder.hasRecords;
 import lib.data.AbstractData;
 import lib.data.BaseQualData;
 import lib.data.hasBaseQualCount;
 import lib.data.builder.SAMRecordWrapper;
+import lib.data.builder.hasLibraryType;
+import lib.data.builder.hasRecords;
 
 public class BaseQualRecordData
 extends BaseQualData

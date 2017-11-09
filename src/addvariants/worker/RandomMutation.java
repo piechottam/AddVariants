@@ -9,8 +9,8 @@ import java.util.Random;
 import java.util.Set;
 
 import lib.data.BaseCallConfig;
-import lib.data.builder.BaseCallCache;
 import lib.data.builder.SAMRecordWrapper;
+import lib.data.cache.BaseCallCache;
 import lib.tmp.SAMRecordModifier;
 import lib.util.Coordinate;
 import lib.variant.Variant;
