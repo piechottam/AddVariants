@@ -8,14 +8,14 @@ import lib.cli.options.AbstractACOption;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 
-import addvariants.cli.parameters.AbstractParameters;
+import addvariants.cli.parameters.AddVariantsParameters;
 
 public class VariantFilenameOption 
 extends AbstractACOption {
 
-	private AbstractParameters<?> parameters;
+	private AddVariantsParameters<?> parameters;
 	
-	public VariantFilenameOption(AbstractParameters<?> parameters) {
+	public VariantFilenameOption(AddVariantsParameters<?> parameters) {
 		super("v", "variant-output");
 		this.parameters = parameters;
 	}

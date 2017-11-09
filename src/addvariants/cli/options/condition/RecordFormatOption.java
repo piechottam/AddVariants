@@ -3,6 +3,9 @@ package addvariants.cli.options.condition;
 import java.util.Map;
 
 import lib.cli.options.AbstractACOption;
+import lib.data.AbstractData;
+import lib.data.has.hasBaseCallCount;
+import lib.data.has.hasRecordWrapper;
 import lib.io.record.AbstractRecordFormat;
 import lib.io.record.BAMRecordFormat;
 import lib.io.record.FASTQRecordFormat;
@@ -11,19 +14,18 @@ import lib.io.record.SAMRecordFormat;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 
-import addvariants.cli.parameters.AbstractParameters;
-import addvariants.cli.parameters.ConditionParameter;
-import addvariants.data.BaseQualRecordData;
+import addvariants.cli.parameters.AddVariantsParameters;
+import addvariants.cli.parameters.AddVariantsConditionParameter;
 
-public class RecordFormatOption<T extends BaseQualRecordData> 
+public class RecordFormatOption<T extends AbstractData & hasBaseCallCount & hasRecordWrapper> 
 extends AbstractACOption {
 
-	private AbstractParameters<T> parameters;
-	private Map<Character, AbstractRecordFormat<T>> formats;
+	private AddVariantsParameters<T> parameter;
+	private Map<Character, AbstractRecordFormat> formats;
 
-	public RecordFormatOption(final AbstractParameters<T> parameters, final Map<Character, AbstractRecordFormat<T>> formats) {
+	public RecordFormatOption(final AddVariantsParameters<T> parameters, final Map<Character, AbstractRecordFormat> formats) {
 		super("R", "record-format");
-		this.parameters = parameters;
+		this.parameter = parameters;
 		this.formats = formats;
 	}
 
@@ -31,11 +33,11 @@ extends AbstractACOption {
 	public Option getOption() {
 		StringBuffer sb = new StringBuffer();
 
-		final ConditionParameter<T> condition = parameters.getConditionsSize().get(0); 
-		final AbstractRecordFormat<T> recordFormat = condition.getRecordFormat();
+		final AddVariantsConditionParameter<T> condition = parameter.getConditionParameter(0); 
+		final AbstractRecordFormat recordFormat = condition.getRecordFormat();
 
 		for (final char c : formats.keySet()) {
-			AbstractRecordFormat<T> format = formats.get(c);
+			AbstractRecordFormat format = formats.get(c);
 			if (format.getC() == recordFormat.getC()) {
 				sb.append("<*>");
 			} else {
@@ -66,22 +68,24 @@ extends AbstractACOption {
 			if (! formats.containsKey(c)) {
 				throw new IllegalArgumentException("Unknown record format: " + c);
 			}
-			for (final ConditionParameter<T> condition : parameters.getConditionsSize()) {
-				AbstractRecordFormat<T> recordFormat = null;
+			for (int conditionIndex = 0; conditionIndex < parameter.getConditionsSize(); conditionIndex++) {
+				final AddVariantsConditionParameter<T> conditionParameter = parameter.getConditionParameter(conditionIndex);
+
+				AbstractRecordFormat recordFormat = null;
 				switch (c) {
 				case SAMRecordFormat.CHAR:
-						recordFormat = new SAMRecordFormat<T>();
+						recordFormat = new SAMRecordFormat();
 				case BAMRecordFormat.CHAR:
-						recordFormat = new BAMRecordFormat<T>();
+						recordFormat = new BAMRecordFormat();
 						break;
 				case FASTQRecordFormat.CHAR:
-					recordFormat = new FASTQRecordFormat<T>();
+					recordFormat = new FASTQRecordFormat();
 					break;
 				
 					default:
 						throw new IllegalArgumentException("Unknown record format: " + c);		
 				}
-				condition.setRecordFormat(recordFormat);
+				conditionParameter.setRecordFormat(recordFormat);
 			}
 		}
 	}

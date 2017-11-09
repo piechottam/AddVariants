@@ -1,21 +1,22 @@
 package addvariants.cli.parameters;
 
 import lib.cli.parameters.AbstractConditionParameter;
+import lib.data.AbstractData;
+import lib.data.has.hasBaseCallCount;
+import lib.data.has.hasRecordWrapper;
 import lib.io.record.AbstractRecordFormat;
 import lib.io.record.BAMRecordFormat;
 
-import addvariants.data.BaseQualRecordData;
-
-public class ConditionParameter<T extends BaseQualRecordData> 
+public class AddVariantsConditionParameter<T extends AbstractData & hasBaseCallCount & hasRecordWrapper> 
 extends AbstractConditionParameter<T> {
 	
 	// record output
 	private String recordFilename;
 	private AbstractRecordFormat recordFormat;
-	
+
 	private boolean adjustSAMTag;
 	
-	public ConditionParameter() {
+	public AddVariantsConditionParameter() {
 		super();
 		
 		recordFilename = new String();

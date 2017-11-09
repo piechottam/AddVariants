@@ -1,21 +1,19 @@
 package addvariants.cli.options.condition;
 
-
 import java.io.File;
 import java.nio.file.FileAlreadyExistsException;
-import java.util.List;
 
 import lib.cli.options.condition.AbstractConditionACOption;
+import lib.data.AbstractData;
+import lib.data.has.hasBaseCallCount;
+import lib.data.has.hasRecordWrapper;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 
-import com.sun.org.apache.xalan.internal.xsltc.cmdline.getopt.GetOpt;
+import addvariants.cli.parameters.AddVariantsConditionParameter;
 
-import addvariants.cli.parameters.ConditionParameter;
-import addvariants.data.BaseQualRecordData;
-
-public class RecordFilenameOption<T extends BaseQualRecordData> 
+public class RecordFilenameOption<T extends AbstractData & hasBaseCallCount & hasRecordWrapper>
 extends AbstractConditionACOption<T> {
 
 	// TODO multiple files
@@ -25,13 +23,15 @@ extends AbstractConditionACOption<T> {
 	
 	public final static String SUFFIX = "modified";
 	
-	public RecordFilenameOption(final int conditionIndex, final ConditionParameter<T> conditionParameter) {
+	public RecordFilenameOption(final int conditionIndex, final AddVariantsConditionParameter<T> conditionParameter) {
 		super(OPT, LONG_OPT, conditionIndex, conditionParameter);
 	}
 
-	public RecordFilenameOption(final List<ConditionParameter<T>> conditionParameters) {
+	/* TODO
+	public RecordFilenameOption(final List<AddVariantsConditionParameter<T>> conditionParameters) {
 		super(OPT, LONG_OPT, conditionParameters);
 	}
+	*/
 
 	@Override
 	public Option getOption() {
@@ -63,8 +63,10 @@ extends AbstractConditionACOption<T> {
 		 		throw new FileAlreadyExistsException(recordFilename);
 		 	}
 		 	// set record output filename
-			for (final ConditionParameter<T> condition : getConditionParameters()) {
-	    		condition.setRecordFilename(recordFilename);
+			for (int conditionIndex = 0; conditionIndex < getConditionParameters().size(); conditionIndex++) {
+				final AddVariantsConditionParameter<T> conditionParameter = 
+						(AddVariantsConditionParameter<T>) getConditionParameters().get(conditionIndex);
+				conditionParameter.setRecordFilename(recordFilename);
 	    	}
 			
 			

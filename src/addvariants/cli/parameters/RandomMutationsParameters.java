@@ -1,9 +1,11 @@
 package addvariants.cli.parameters;
 
-import addvariants.data.BaseQualRecordData;
+import lib.data.AbstractData;
+import lib.data.has.hasBaseCallCount;
+import lib.data.has.hasRecordWrapper;
 
-public class RandomMutationsParameters<T extends BaseQualRecordData> 
-extends AbstractParameters<T> {
+public class RandomMutationsParameters<T extends AbstractData & hasBaseCallCount & hasRecordWrapper> 
+extends AddVariantsParameters<T> {
 
 	private double mutationRate;
 	

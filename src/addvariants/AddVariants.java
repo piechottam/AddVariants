@@ -15,6 +15,7 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 */
 
 package addvariants;
@@ -26,12 +27,8 @@ import java.util.TreeMap;
 
 import lib.method.AbstractMethodFactory;
 import lib.util.AbstractTool;
-import lib.util.Logger;
-import lib.util.SimpleTimer;
-import lib.util.coordinateprovider.BedCoordinateProvider;
-import lib.util.coordinateprovider.CoordinateProvider;
 
-import addvariants.cli.parameters.AbstractParameters;
+import addvariants.method.AbstractAddVariantsMethodFactory;
 import addvariants.method.RandomMutationsMethod1;
 
 public class AddVariants extends AbstractTool {
@@ -62,37 +59,44 @@ public class AddVariants extends AbstractTool {
 		return methodFactories;
 	}
 	
+	protected AbstractAddVariantsMethodFactory<?> getMethodFactory() {
+		return (AbstractAddVariantsMethodFactory<?>) getCLI().getMethodFactory();
+	}
+	
 	@Override
 	protected String addEpilog() {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("Finished implanting variants.");
 		sb.append('\n');
 		
+		/* TODO
 		sb.append("Implanted variants can be found in: ");
-		String filename = getCLI().getMethodFactory().getParameters().getVariantFilename();
+		final String filename = getCLI().getMethodFactory().getParameter().getVariantFilename();
 		sb.append(filename);
 		sb.append('\n');
 		
-		final int conditionsSize = getCLI().getMethodFactory().getParameters().getConditionsSize();
+		final int conditionsSize = getCLI().getMethodFactory().getParameter().getConditionsSize();
 		
 		sb.append("Modified reads/records can be found in: ");
 		int conditionIndex = 0;
-		filename = getCLI().getMethodFactory().getParameters().getConditionParameters().get(conditionIndex).getRecordFilename();
+		filename = getMethodFactory().getParameter().getConditionParameters().get(conditionIndex).getRecordFilename();
 		sb.append(filename);
 		conditionIndex++;
 		for (; conditionIndex < conditionsSize; conditionIndex++) {
-			filename = getCLI().getMethodFactory().getParameters()
+			filename = getCLI().getMethodFactory().getParameter()
 					.getConditionParameters().get(conditionIndex)
 					.getRecordFilename();
 			sb.append(", " + filename);
 			
 		}
 		sb.append('\n');
+		*/
 
 		final String lineSep = "--------------------------------------------------------------------------------";
 		sb.append(lineSep);
 		sb.append('\n');
 		sb.append("Elapsed time:\t\t" + getLogger().getTimer().getTotalTimestring());
+		return sb.toString();
 	}
 	
 	/**

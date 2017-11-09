@@ -6,20 +6,22 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 
 import lib.cli.options.AbstractACOption;
+import lib.data.AbstractData;
+import lib.data.has.hasBaseCallCount;
+import lib.data.has.hasRecordWrapper;
 import lib.io.variant.AbstractVariantFormat;
 import lib.io.variant.BEDlikeVariantFormat;
 import lib.io.variant.VCFVariantFormat;
 
-import addvariants.cli.parameters.AbstractParameters;
-import addvariants.data.BaseQualRecordData;
+import addvariants.cli.parameters.AddVariantsParameters;
 
-public class VariantFormatOption<T extends BaseQualRecordData> 
+public class VariantFormatOption<T extends AbstractData & hasBaseCallCount & hasRecordWrapper> 
 extends AbstractACOption {
 
-	private AbstractParameters<T> parameters;
-	private Map<Character, AbstractVariantFormat<T>> formats;
+	private AddVariantsParameters<T> parameters;
+	private Map<Character, AbstractVariantFormat> formats;
 
-	public VariantFormatOption(final AbstractParameters<T> parameters, final Map<Character, AbstractVariantFormat<T>> formats) {
+	public VariantFormatOption(final AddVariantsParameters<T> parameters, final Map<Character, AbstractVariantFormat> formats) {
 		super("V", "variant-format");
 		this.parameters = parameters;
 		this.formats = formats;
@@ -29,10 +31,10 @@ extends AbstractACOption {
 	public Option getOption() {
 		StringBuffer sb = new StringBuffer();
 
-		final AbstractVariantFormat<T> recordFormat = parameters.getVariantFormat();
+		final AbstractVariantFormat recordFormat = parameters.getVariantFormat();
 
 		for (final char c : formats.keySet()) {
-			AbstractVariantFormat<T> format = formats.get(c);
+			AbstractVariantFormat format = formats.get(c);
 			if (format.getC() == recordFormat.getC()) {
 				sb.append("<*>");
 			} else {
@@ -64,13 +66,13 @@ extends AbstractACOption {
 			if (! formats.containsKey(c)) {
 				throw new IllegalArgumentException("Unknown variant format: " + c);
 			}
-			AbstractVariantFormat<T> recordFormat = null;
+			AbstractVariantFormat recordFormat = null;
 			switch (c) {
 			case BEDlikeVariantFormat.CHAR:
-					recordFormat = new BEDlikeVariantFormat<T>();
+					recordFormat = new BEDlikeVariantFormat();
 					break;
 			case VCFVariantFormat.CHAR:
-					recordFormat = new VCFVariantFormat<T>();
+					recordFormat = new VCFVariantFormat();
 					break;
 					default:
 					throw new IllegalArgumentException("Unknown variant format: " + c);		

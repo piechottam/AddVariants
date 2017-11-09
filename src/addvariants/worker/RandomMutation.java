@@ -1,6 +1,5 @@
 package addvariants.worker;
 
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -8,28 +7,33 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import lib.data.BaseCallConfig;
+import lib.cli.options.BaseCallConfig;
+import lib.data.AbstractData;
+import lib.data.ParallelData;
 import lib.data.builder.SAMRecordWrapper;
 import lib.data.cache.BaseCallCache;
+import lib.data.has.hasBaseCallCount;
+import lib.data.has.hasRecordWrapper;
 import lib.tmp.SAMRecordModifier;
 import lib.util.Coordinate;
 import lib.variant.Variant;
 
-import addvariants.cli.parameters.ConditionParameter;
+import addvariants.cli.parameters.AddVariantsConditionParameter;
 import addvariants.cli.parameters.RandomMutationsParameters;
-import addvariants.data.BaseQualRecordData;
-import addvariants.utils.ParallelData;
 
-public class RandomMutation<T extends BaseQualRecordData> 
+public class RandomMutation<T extends AbstractData & hasBaseCallCount & hasRecordWrapper> 
 implements SAMRecordModifier {
 
 	private Random random;
 
 	private RandomMutationsParameters<T> parameters;
+	
+	/*
 	private ParallelData<T> parallelData;
 
 	private final BaseCallCache[] caches;
-	private final List<List<SAMRecordWrapper>> readRecords; 
+	private final List<List<SAMRecordWrapper>> readRecords;
+	*/ 
 
 	private int windowPosition;
 	private String activeWindowContig;
@@ -153,7 +157,7 @@ implements SAMRecordModifier {
 	}
 
 	private boolean isCovered(final int conditionIndex, final int windowPosition) {
-		final ConditionParameter<T> condition = parameters.getConditionsSize().get(conditionIndex);
+		final AddVariantsConditionParameter<T> condition = parameters.getConditionsSize().get(conditionIndex);
 		final int minCoverage = condition.getMinCoverage();
 		final int coverage = caches[conditionIndex].getCoverage(windowPosition);
 		return coverage >= minCoverage;
@@ -206,7 +210,7 @@ implements SAMRecordModifier {
 
 		// update of coordinates not needed
 		for (int conditionIndex = 0; conditionIndex < conditions; conditionIndex++) {
-			final ConditionParameter<T> condition = parameters.getConditionsSize().get(conditionIndex);
+			final AddVariantsConditionParameter<T> condition = parameters.getConditionsSize().get(conditionIndex);
 			final List<SAMRecordWrapper> recordWrappers = caches[conditionIndex].getRecordWrapper(windowPosition);
 
 			T data = parameters.getMethodFactory().createData();
