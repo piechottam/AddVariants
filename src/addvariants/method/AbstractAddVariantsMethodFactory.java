@@ -1,7 +1,7 @@
 package addvariants.method;
 
 import addvariants.cli.parameters.AddVariantsParameters;
-import lib.cli.parameters.AbstractParameter;
+
 import lib.data.AbstractData;
 import lib.data.has.hasBaseCallCount;
 import lib.data.has.hasRecordWrapper;

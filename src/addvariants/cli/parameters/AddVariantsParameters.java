@@ -4,17 +4,17 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-import lib.cli.parameters.AbstractConditionParameter;
-import lib.cli.parameters.AbstractParameter;
+import addvariants.io.variant.AbstractVariantFormat;
+import addvariants.io.variant.BEDlikeVariantFormat;
+
+import lib.cli.parameter.AbstractParameter;
 import lib.data.AbstractData;
 import lib.data.builder.factory.AbstractDataBuilderFactory;
 import lib.data.has.hasBaseCallCount;
 import lib.data.has.hasRecordWrapper;
-import lib.io.variant.AbstractVariantFormat;
-import lib.io.variant.BEDlikeVariantFormat;
 
 public class AddVariantsParameters<T extends AbstractData & hasBaseCallCount & hasRecordWrapper> 
-extends AbstractParameter<T> {
+extends AbstractParameter<T, ?> {
 
 	// variant output
 	private String variantFilename;

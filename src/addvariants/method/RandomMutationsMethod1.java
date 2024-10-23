@@ -4,13 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import lib.data.AbstractData;
-import lib.io.record.AbstractRecordFormat;
-import lib.io.record.BAMRecordFormat;
-import lib.io.record.FASTQRecordFormat;
-import lib.io.record.SAMRecordFormat;
-import lib.io.variant.AbstractVariantFormat;
-import lib.io.variant.BEDlikeVariantFormat;
-import lib.io.variant.VCFVariantFormat;
 import lib.tmp.SAMRecordModifier;
 
 import org.apache.commons.cli.ParseException;
@@ -23,6 +16,13 @@ import addvariants.cli.options.condition.VariantFormatOption;
 import addvariants.cli.parameters.AddVariantsConditionParameter;
 import addvariants.cli.parameters.RandomMutationsParameters;
 import addvariants.data.BaseCallRecordWrapperData;
+import addvariants.io.record.AbstractRecordFormat;
+import addvariants.io.record.BAMRecordFormat;
+import addvariants.io.record.FASTQRecordFormat;
+import addvariants.io.record.SAMRecordFormat;
+import addvariants.io.variant.AbstractVariantFormat;
+import addvariants.io.variant.BEDlikeVariantFormat;
+import addvariants.io.variant.VCFVariantFormat;
 import addvariants.worker.RandomMutation;
 
 public class RandomMutationsMethod1 

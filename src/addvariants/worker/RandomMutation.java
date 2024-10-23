@@ -223,7 +223,7 @@ implements SAMRecordModifier {
 				}
 
 				// decode
-				recordWrapper.processRecord();
+				recordWrapper.process();
 
 				final byte baseQualtiy = recordWrapper.getBaseQuality(referencePosition);
 				// ignore low quality base calls

@@ -9,11 +9,11 @@ import lib.cli.options.AbstractACOption;
 import lib.data.AbstractData;
 import lib.data.has.hasBaseCallCount;
 import lib.data.has.hasRecordWrapper;
-import lib.io.variant.AbstractVariantFormat;
-import lib.io.variant.BEDlikeVariantFormat;
-import lib.io.variant.VCFVariantFormat;
 
 import addvariants.cli.parameters.AddVariantsParameters;
+import addvariants.io.variant.AbstractVariantFormat;
+import addvariants.io.variant.BEDlikeVariantFormat;
+import addvariants.io.variant.VCFVariantFormat;
 
 public class VariantFormatOption<T extends AbstractData & hasBaseCallCount & hasRecordWrapper> 
 extends AbstractACOption {

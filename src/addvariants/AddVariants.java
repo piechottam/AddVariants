@@ -21,50 +21,40 @@
 package addvariants;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import lib.method.AbstractMethodFactory;
 import lib.util.AbstractTool;
 
-import addvariants.method.AbstractAddVariantsMethodFactory;
-import addvariants.method.RandomMutationsMethod1;
-
 public class AddVariants extends AbstractTool {
-
-	private int sites;
 
 	public static final Character TAG_PREFFIX = 'Z';
 
 	public AddVariants(final String[] args) {
-		super("AddVariants2", "0.9-DEVEL", args);
-		sites = 0;
+		super("AddVariants2", "0.91-DEVEL", args);
 	}
 
 	@Override
-	protected Map<String, AbstractMethodFactory<?>> getMethodFactories() {
+	protected Map<String, AbstractMethodFactory<?, ?>> getMethodFactories() {
 		// container for available methods
-		final Map<String, AbstractMethodFactory<?>> methodFactories = 
-				new TreeMap<String, AbstractMethodFactory<?>>();
+		final Map<String, AbstractMethodFactory<?, ?>> methodFactories = 
+				new LinkedHashMap<String, AbstractMethodFactory<?, ?>>();
 
 		// helper to populate factories
-		final List<AbstractMethodFactory<?>> factories = new ArrayList<AbstractMethodFactory<?>>(10);
-		factories.add(new RandomMutationsMethod1());
+		final List<AbstractMethodFactory<?, ?>> tmpMethodFactories = new ArrayList<AbstractMethodFactory<?, ?>>(2);
+		// FIXME methodFactories.add(new RandomMutationsMethod1());
 
-		for (final AbstractMethodFactory<?> factory : factories) {
-			methodFactories.put(factory.getName(), factory);
+		for (final AbstractMethodFactory<?, ?> methodFactory : tmpMethodFactories) {
+			methodFactories.put(methodFactory.getName(), methodFactory);
 		}
 
 		return methodFactories;
 	}
 	
-	protected AbstractAddVariantsMethodFactory<?> getMethodFactory() {
-		return (AbstractAddVariantsMethodFactory<?>) getCLI().getMethodFactory();
-	}
-	
 	@Override
-	protected String addEpilog() {
+	protected String getEpilog() {
 		final StringBuilder sb = new StringBuilder();
 		sb.append("Finished implanting variants.");
 		sb.append('\n');
